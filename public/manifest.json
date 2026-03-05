@@ -1,0 +1,21 @@
+{
+  "name": "ScreenDate",
+  "short_name": "ScreenDate",
+  "description": "Find someone to watch movies with in your city",
+  "start_url": "/",
+  "display": "standalone",
+  "background_color": "#ffffff",
+  "theme_color": "#9333ea",
+  "icons": [
+    {
+      "src": "/icon.svg",
+      "sizes": "any",
+      "type": "image/svg+xml"
+    },
+    {
+      "src": "/apple-icon.png",
+      "sizes": "180x180",
+      "type": "image/png"
+    }
+  ]
+}
