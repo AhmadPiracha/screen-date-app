@@ -9,7 +9,7 @@ import { Label } from '@/components/ui/label'
 import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from '@/components/ui/select'
 import { Textarea } from '@/components/ui/textarea'
 import { Avatar, AvatarFallback, AvatarImage } from '@/components/ui/avatar'
-import { Loader2, Camera, MapPin } from 'lucide-react'
+import { Loader2, Camera, MapPin, LogOut } from 'lucide-react'
 import { getLocationWithCity } from '@/lib/geolocation'
 import type { Profile } from '@/types'
 
@@ -23,6 +23,7 @@ export default function ProfilePage() {
   const [error, setError] = useState('')
   const [success, setSuccess] = useState('')
   const [profile, setProfile] = useState<Partial<Profile>>({})
+  const [loggingOut, setLoggingOut] = useState(false)
 
   const fetchProfile = useCallback(async () => {
     try {
@@ -304,6 +305,36 @@ export default function ProfilePage() {
                 'Save Profile'
               )}
             </Button>
+
+            <div className="pt-4 border-t">
+              <Button
+                variant="outline"
+                className="w-full text-red-600 hover:text-red-700 hover:bg-red-50 border-red-200"
+                onClick={async () => {
+                  setLoggingOut(true)
+                  try {
+                    await fetch('/api/auth/logout', { method: 'POST' })
+                    router.push('/login')
+                  } catch (err) {
+                    setError('Failed to log out')
+                    setLoggingOut(false)
+                  }
+                }}
+                disabled={loggingOut}
+              >
+                {loggingOut ? (
+                  <>
+                    <Loader2 className="mr-2 h-4 w-4 animate-spin" />
+                    Logging out...
+                  </>
+                ) : (
+                  <>
+                    <LogOut className="mr-2 h-4 w-4" />
+                    Log Out
+                  </>
+                )}
+              </Button>
+            </div>
           </CardContent>
         </Card>
       </div>

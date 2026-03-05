@@ -1,5 +1,6 @@
 import { createClient } from '@/lib/supabase/server'
 import { NextRequest, NextResponse } from 'next/server'
+import { checkRateLimit, RATE_LIMITS, rateLimitResponse } from '@/lib/ratelimit'
 
 // GET messages (for a specific conversation)
 export async function GET(request: NextRequest) {
@@ -113,6 +114,12 @@ export async function POST(request: NextRequest) {
         { error: 'Unauthorized' },
         { status: 401 }
       )
+    }
+
+    // Rate limiting: max 100 messages per hour
+    const rateLimit = checkRateLimit(user.id, 'messages', RATE_LIMITS.messages)
+    if (!rateLimit.success) {
+      return NextResponse.json(rateLimitResponse(rateLimit), { status: 429 })
     }
 
     const { matchId, content } = await request.json()

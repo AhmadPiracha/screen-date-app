@@ -94,8 +94,8 @@ Open [http://localhost:3000](http://localhost:3000) to see the app.
 | Endpoint | Method | Description |
 |----------|--------|-------------|
 | `/api/auth/signup` | POST | Register new user |
-| `/api/auth/signin` | POST | Login with phone |
-| `/api/auth/signout` | POST | Logout |
+| `/api/auth/signin` | POST | Login with email |
+| `/api/auth/logout` | POST | Logout |
 | `/api/users/me` | GET | Get current user |
 | `/api/users/profile` | GET/PUT | Get/update profile |
 | `/api/users/avatar` | POST | Upload profile image |

@@ -7,6 +7,7 @@ import { Avatar, AvatarFallback, AvatarImage } from '@/components/ui/avatar'
 import { Button } from '@/components/ui/button'
 import { Input } from '@/components/ui/input'
 import { Loader2, ArrowLeft, Send, MoreVertical, Flag, Ban } from 'lucide-react'
+import { useRealtimeChat, type RealtimeMessage } from '@/hooks/use-realtime-chat'
 import {
   DropdownMenu,
   DropdownMenuContent,
@@ -91,16 +92,26 @@ export default function ChatPage() {
 
   useEffect(() => {
     fetchMessages()
-    
-    // Poll for new messages every 5 seconds, but only when tab is visible
-    const interval = setInterval(() => {
-      if (document.visibilityState === 'visible') {
-        fetchMessages()
-      }
-    }, 5000)
-    
-    return () => clearInterval(interval)
+    // Realtime subscription handles new messages - no polling needed
   }, [fetchMessages])
+
+  // Handle new realtime messages
+  const handleNewMessage = useCallback((message: RealtimeMessage) => {
+    setMessages((prev) => {
+      // Check if message already exists to prevent duplicates
+      if (prev.some((m) => m.id === message.id)) {
+        return prev
+      }
+      return [...prev, message as Message]
+    })
+  }, [])
+
+  // Subscribe to realtime messages for this match
+  useRealtimeChat({
+    matchId,
+    onNewMessage: handleNewMessage,
+    enabled: !loading,
+  })
 
   useEffect(() => {
     scrollToBottom()

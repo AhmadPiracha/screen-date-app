@@ -1,5 +1,6 @@
 import { createClient } from '@/lib/supabase/server'
 import { NextRequest, NextResponse } from 'next/server'
+import { checkRateLimit, RATE_LIMITS, rateLimitResponse } from '@/lib/ratelimit'
 
 // POST report a user
 export async function POST(request: NextRequest) {
@@ -16,6 +17,12 @@ export async function POST(request: NextRequest) {
         { error: 'Unauthorized' },
         { status: 401 }
       )
+    }
+
+    // Rate limiting: max 10 reports per day
+    const rateLimit = checkRateLimit(user.id, 'reports', RATE_LIMITS.reports)
+    if (!rateLimit.success) {
+      return NextResponse.json(rateLimitResponse(rateLimit), { status: 429 })
     }
 
     const { reportedUserId, reason, description } = await request.json()

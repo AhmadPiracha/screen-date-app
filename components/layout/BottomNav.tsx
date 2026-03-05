@@ -1,8 +1,9 @@
 'use client'
 
+import { useState, useEffect } from 'react'
 import Link from 'next/link'
 import { usePathname } from 'next/navigation'
-import { Film, Heart, MessageCircle, User } from 'lucide-react'
+import { Film, Heart, User, Shield } from 'lucide-react'
 import { cn } from '@/lib/utils'
 
 const navItems = [
@@ -14,21 +15,36 @@ const navItems = [
 
 export function BottomNav() {
   const pathname = usePathname()
+  const [isAdmin, setIsAdmin] = useState(false)
+
+  useEffect(() => {
+    // Check if user is admin
+    fetch('/api/admin/analytics')
+      .then((res) => {
+        setIsAdmin(res.ok)
+      })
+      .catch(() => setIsAdmin(false))
+  }, [])
 
   // Don't show on auth pages or chat
   if (
     pathname === '/login' ||
     pathname === '/signup' ||
     pathname === '/' ||
-    pathname.startsWith('/chat/')
+    pathname.startsWith('/chat/') ||
+    pathname.startsWith('/admin')
   ) {
     return null
   }
 
+  const allNavItems = isAdmin
+    ? [...navItems, { href: '/admin', icon: Shield, label: 'Admin' }]
+    : navItems
+
   return (
     <nav className="fixed bottom-0 inset-x-0 bg-white border-t z-40">
       <div className="flex justify-around items-center h-16 max-w-md mx-auto">
-        {navItems.map(({ href, icon: Icon, label }) => {
+        {allNavItems.map(({ href, icon: Icon, label }) => {
           const isActive = pathname === href || pathname.startsWith(href + '/')
           return (
             <Link

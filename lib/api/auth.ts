@@ -1,5 +1,5 @@
 export async function signUp(email: string, password: string, firstName: string, lastName: string) {
-  const response = await fetch('/api/auth/sign-up', {
+  const response = await fetch('/api/auth/signup', {
     method: 'POST',
     headers: { 'Content-Type': 'application/json' },
     body: JSON.stringify({ email, password, firstName, lastName }),
@@ -8,7 +8,7 @@ export async function signUp(email: string, password: string, firstName: string,
 }
 
 export async function login(email: string, password: string) {
-  const response = await fetch('/api/auth/login', {
+  const response = await fetch('/api/auth/signin', {
     method: 'POST',
     headers: { 'Content-Type': 'application/json' },
     body: JSON.stringify({ email, password }),
