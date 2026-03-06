@@ -19,12 +19,23 @@ export function BottomNav() {
   const [isAdmin, setIsAdmin] = useState(false)
 
   useEffect(() => {
-    // Check if user is admin
+    // Cache admin check in sessionStorage to avoid a network request on every page
+    const cached = sessionStorage.getItem('isAdmin')
+    if (cached !== null) {
+      setIsAdmin(cached === 'true')
+      return
+    }
+
     fetch('/api/admin/analytics')
       .then((res) => {
-        setIsAdmin(res.ok)
+        const result = res.ok
+        setIsAdmin(result)
+        sessionStorage.setItem('isAdmin', String(result))
       })
-      .catch(() => setIsAdmin(false))
+      .catch(() => {
+        setIsAdmin(false)
+        sessionStorage.setItem('isAdmin', 'false')
+      })
   }, [])
 
   // Don't show on auth pages or chat

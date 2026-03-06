@@ -119,13 +119,13 @@ export default function SignUpPage() {
   }
 
   return (
-    <div className="min-h-screen flex flex-col items-center justify-center bg-gradient-to-br from-pink-500 via-purple-500 to-indigo-600 p-4">
+    <div className="min-h-screen flex flex-col items-center justify-center bg-gray-50 p-4">
       <div className="mb-8 text-center">
-        <div className="inline-flex items-center justify-center w-16 h-16 bg-white rounded-full mb-4">
-          <Film className="w-8 h-8 text-purple-600" />
+        <div className="inline-flex items-center justify-center w-16 h-16 bg-purple-600 rounded-2xl mb-4 shadow-lg shadow-purple-200">
+          <Film className="w-8 h-8 text-white" />
         </div>
-        <h1 className="text-3xl font-bold text-white">ScreenDate</h1>
-        <p className="text-white/80 mt-2">Create your account</p>
+        <h1 className="text-3xl font-bold text-gray-900">ScreenDate</h1>
+        <p className="text-gray-500 mt-2">Create your account</p>
       </div>
 
       <Card className="w-full max-w-md">

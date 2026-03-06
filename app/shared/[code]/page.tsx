@@ -19,24 +19,24 @@ export default function SharedMatchPage() {
 
   if (loading) {
     return (
-      <div className="min-h-screen flex items-center justify-center bg-gradient-to-br from-purple-600 via-pink-500 to-orange-400">
-        <Loader2 className="w-8 h-8 animate-spin text-white" />
+      <div className="min-h-screen flex items-center justify-center bg-gray-50">
+        <Loader2 className="w-8 h-8 animate-spin text-purple-600" />
       </div>
     )
   }
 
   return (
-    <div className="min-h-screen flex items-center justify-center bg-gradient-to-br from-purple-600 via-pink-500 to-orange-400 p-4">
-      <Card className="max-w-sm w-full overflow-hidden">
+    <div className="min-h-screen flex items-center justify-center bg-gray-50 p-4">
+      <Card className="max-w-sm w-full overflow-hidden shadow-xl">
         {/* Celebration Header */}
-        <div className="bg-gradient-to-r from-pink-500 to-purple-600 p-8 text-center text-white">
+        <div className="bg-purple-600 p-8 text-center text-white">
           <div className="flex justify-center gap-2 mb-4">
             <Sparkles className="w-8 h-8" />
             <Heart className="w-8 h-8 fill-white" />
             <Sparkles className="w-8 h-8" />
           </div>
           <h1 className="text-2xl font-bold mb-2">It's a Match!</h1>
-          <p className="text-pink-100">
+          <p className="text-purple-200">
             Someone found their movie partner on ScreenDate
           </p>
         </div>

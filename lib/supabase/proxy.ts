@@ -2,7 +2,7 @@ import { createServerClient } from '@supabase/ssr'
 import { NextResponse, type NextRequest } from 'next/server'
 
 // Routes that require authentication
-const protectedRoutes = ['/movies', '/discover', '/matches', '/chat', '/profile']
+const protectedRoutes = ['/movies', '/discover', '/matches', '/chat', '/profile', '/tonight', '/plans', '/squads', '/invites', '/admin']
 
 // Routes only for guests (redirect to app if logged in)
 const guestOnlyRoutes = ['/login', '/signup']

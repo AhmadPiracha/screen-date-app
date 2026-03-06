@@ -147,9 +147,9 @@ export default function TonightPage() {
   return (
     <div className="min-h-screen bg-gray-50 pb-20">
       {/* Header */}
-      <div className="bg-gradient-to-r from-purple-600 to-pink-500 text-white px-4 pt-12 pb-6">
-        <h1 className="text-2xl font-bold mb-1">Tonight's Plans</h1>
-        <p className="text-purple-100 text-sm">Find someone to watch with</p>
+      <div className="bg-white border-b px-4 pt-12 pb-6 shadow-sm">
+        <h1 className="text-2xl font-bold text-gray-900 mb-1">Tonight's Plans</h1>
+        <p className="text-gray-500 text-sm">Find someone to watch with</p>
       </div>
 
       {/* Date Selector */}

@@ -57,7 +57,7 @@ export const SwipeCard = memo(function SwipeCard({ profile, onSwipe, isTop }: Sw
               draggable={false}
             />
           ) : (
-            <div className="w-full h-full bg-gradient-to-br from-purple-400 to-pink-400 flex items-center justify-center">
+            <div className="w-full h-full bg-purple-500 flex items-center justify-center">
               <span className="text-8xl text-white font-bold">
                 {profile.name?.charAt(0) || '?'}
               </span>

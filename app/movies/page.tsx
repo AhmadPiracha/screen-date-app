@@ -229,11 +229,11 @@ export default function MoviesPage() {
   return (
     <div className="min-h-screen bg-gray-50 pb-40">
       {/* Header */}
-      <div className="bg-gradient-to-r from-purple-600 to-pink-500 pt-8 pb-4 px-4 sticky top-0 z-20">
-        <h1 className="text-2xl font-bold text-white text-center mb-1">
+      <div className="bg-white border-b pt-8 pb-4 px-4 sticky top-0 z-20 shadow-sm">
+        <h1 className="text-2xl font-bold text-gray-900 text-center mb-1">
           Movies
         </h1>
-        <p className="text-white/80 text-center text-sm mb-4">
+        <p className="text-gray-500 text-center text-sm mb-4">
           Select up to 10 movies you want to watch
         </p>
         
@@ -245,15 +245,15 @@ export default function MoviesPage() {
               placeholder="Search movies..."
               value={searchQuery}
               onChange={(e) => setSearchQuery(e.target.value)}
-              className="pl-10 bg-white/90"
+              className="pl-10"
             />
           </div>
           <Sheet open={filterOpen} onOpenChange={setFilterOpen}>
             <SheetTrigger asChild>
-              <Button variant="secondary" size="icon" className="relative">
+              <Button variant="outline" size="icon" className="relative">
                 <SlidersHorizontal className="w-4 h-4" />
                 {activeFilterCount > 0 && (
-                  <span className="absolute -top-1 -right-1 bg-purple-500 text-white text-xs w-5 h-5 rounded-full flex items-center justify-center">
+                  <span className="absolute -top-1 -right-1 bg-purple-600 text-white text-xs w-5 h-5 rounded-full flex items-center justify-center">
                     {activeFilterCount}
                   </span>
                 )}
@@ -344,15 +344,15 @@ export default function MoviesPage() {
         </div>
 
         {/* Category tabs */}
-        <Tabs value={category} onValueChange={setCategory} className="w-full">
-          <TabsList className="w-full bg-white/20 h-auto p-1">
+        <Tabs value={category} onValueChange={setCategory} className="w-full max-w-md mx-auto">
+          <TabsList className="w-full bg-gray-100 h-auto p-1">
             {CATEGORIES.map((cat) => {
               const Icon = cat.icon
               return (
                 <TabsTrigger
                   key={cat.id}
                   value={cat.id}
-                  className="flex-1 text-xs py-2 data-[state=active]:bg-white data-[state=active]:text-purple-600 text-white/80"
+                  className="flex-1 text-xs py-2 data-[state=active]:bg-white data-[state=active]:text-purple-600 data-[state=active]:shadow-sm text-gray-600"
                 >
                   <Icon className="w-3 h-3 mr-1" />
                   {cat.label}

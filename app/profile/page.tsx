@@ -150,8 +150,8 @@ export default function ProfilePage() {
 
   return (
     <div className="min-h-screen bg-gray-50 pb-20">
-      <div className="bg-gradient-to-r from-purple-600 to-pink-500 pt-8 pb-20 px-4">
-        <h1 className="text-2xl font-bold text-white text-center">Edit Profile</h1>
+      <div className="bg-white border-b pt-8 pb-20 px-4 shadow-sm">
+        <h1 className="text-2xl font-bold text-gray-900 text-center">Edit Profile</h1>
       </div>
 
       <div className="px-4 -mt-12">
