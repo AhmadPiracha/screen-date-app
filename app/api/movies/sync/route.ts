@@ -1,5 +1,5 @@
 import { getSupabaseServiceClient } from '@/lib/supabase'
-import { getNowPlayingMovies, getPopularMovies, transformTMDBMovie } from '@/lib/tmdb'
+import { getNowPlayingMovies, getPopularMovies, transformTMDBMovie, getMovieGenreIds } from '@/lib/tmdb'
 import { NextRequest, NextResponse } from 'next/server'
 
 // POST sync movies from TMDB to database
@@ -53,10 +53,54 @@ export async function POST(request: NextRequest) {
       )
     }
 
+    // Sync movie genres
+    let genresMapped = 0
+    if (data && data.length > 0) {
+      // Create a map of tmdb_id to our db id
+      const tmdbToDbId = new Map<number, string>()
+      data.forEach(movie => {
+        tmdbToDbId.set(movie.tmdb_id, movie.id)
+      })
+
+      // Build genre relationships
+      const movieGenres: { movie_id: string; genre_id: number }[] = []
+      uniqueMovies.forEach(tmdbMovie => {
+        const dbId = tmdbToDbId.get(tmdbMovie.id)
+        if (dbId) {
+          const genreIds = getMovieGenreIds(tmdbMovie)
+          genreIds.forEach(genreId => {
+            movieGenres.push({ movie_id: dbId, genre_id: genreId })
+          })
+        }
+      })
+
+      genresMapped = movieGenres.length
+
+      // Insert movie genres (ignore duplicates)
+      if (movieGenres.length > 0) {
+        // Delete existing genre mappings for these movies first
+        const movieIds = [...new Set(movieGenres.map(mg => mg.movie_id))]
+        await supabase
+          .from('movie_genres')
+          .delete()
+          .in('movie_id', movieIds)
+
+        // Insert new mappings
+        const { error: genreError } = await supabase
+          .from('movie_genres')
+          .insert(movieGenres)
+        
+        if (genreError) {
+          console.error('Genre sync error:', genreError)
+        }
+      }
+    }
+
     return NextResponse.json({
       message: 'Movies synced successfully',
       synced: moviesToInsert.length,
-      movies: data,
+      genresMapped,
+      movies: data?.slice(0, 3),
     })
   } catch (error) {
     console.error('Movie sync error:', error)

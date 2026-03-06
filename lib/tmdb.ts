@@ -186,8 +186,16 @@ export function transformTMDBMovie(movie: TMDBMovie) {
     tmdb_id: movie.id,
     title: movie.title,
     poster_url: getPosterUrl(movie.poster_path, 'w500'),
+    backdrop_url: movie.backdrop_path ? `${TMDB_IMAGE_BASE}/w780${movie.backdrop_path}` : null,
     release_date: movie.release_date || null,
     overview: movie.overview,
     popularity: movie.popularity,
+    vote_average: movie.vote_average || 0,
+    vote_count: movie.vote_count || 0,
   }
+}
+
+// Get genre IDs from a TMDB movie
+export function getMovieGenreIds(movie: TMDBMovie): number[] {
+  return movie.genre_ids || []
 }

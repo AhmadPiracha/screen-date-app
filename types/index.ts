@@ -25,14 +25,24 @@ export interface Profile {
   updated_at: string
 }
 
+export interface Genre {
+  id: number
+  name: string
+}
+
 export interface Movie {
   id: string
   tmdb_id: number
   title: string
   poster_url: string | null
+  backdrop_url?: string | null
   release_date: string | null
   overview: string | null
   popularity: number | null
+  vote_average?: number | null
+  vote_count?: number | null
+  genres?: Genre[]
+  genre_ids?: number[]
   created_at: string
   updated_at: string
 }
