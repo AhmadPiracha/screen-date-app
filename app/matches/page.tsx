@@ -6,7 +6,7 @@ import Link from 'next/link'
 import { Avatar, AvatarFallback, AvatarImage } from '@/components/ui/avatar'
 import { Card } from '@/components/ui/card'
 import { Badge } from '@/components/ui/badge'
-import { Loader2, MessageCircle, Heart, Film, ArrowLeft } from 'lucide-react'
+import { Loader2, MessageCircle, Heart, Film, ArrowLeft, Share2 } from 'lucide-react'
 import { Button } from '@/components/ui/button'
 import type { Conversation } from '@/types'
 import { formatDistanceToNow } from 'date-fns'
@@ -15,6 +15,7 @@ export default function MatchesPage() {
   const router = useRouter()
   const [loading, setLoading] = useState(true)
   const [conversations, setConversations] = useState<Conversation[]>([])
+  const [sharing, setSharing] = useState<string | null>(null)
 
   const fetchConversations = useCallback(async () => {
     try {
@@ -35,6 +36,35 @@ export default function MatchesPage() {
   useEffect(() => {
     fetchConversations()
   }, [fetchConversations])
+
+  const handleShare = async (matchId: string, userName: string) => {
+    setSharing(matchId)
+    try {
+      const response = await fetch(`/api/matches/${matchId}/share`, {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({ platform: 'general' }),
+      })
+      
+      if (response.ok) {
+        const data = await response.json()
+        if (navigator.share) {
+          await navigator.share({
+            title: 'I found a movie match!',
+            text: `I matched with ${userName} on ScreenDate! 🎬`,
+            url: data.shareUrl,
+          })
+        } else {
+          navigator.clipboard.writeText(data.shareUrl)
+          alert('Share link copied!')
+        }
+      }
+    } catch (err) {
+      console.error('Error sharing match:', err)
+    } finally {
+      setSharing(null)
+    }
+  }
 
   if (loading) {
     return (
@@ -97,6 +127,19 @@ export default function MatchesPage() {
                             {conversation.otherUserProfile?.name?.charAt(0) || '?'}
                           </AvatarFallback>
                         </Avatar>
+                        <button
+                          onClick={(e) => {
+                            e.preventDefault()
+                            handleShare(conversation.matchId, conversation.otherUserProfile?.name || 'someone')
+                          }}
+                          className="absolute -top-1 -right-1 bg-white rounded-full p-1 shadow-md hover:bg-gray-100"
+                        >
+                          {sharing === conversation.matchId ? (
+                            <Loader2 className="w-3 h-3 animate-spin text-purple-500" />
+                          ) : (
+                            <Share2 className="w-3 h-3 text-purple-500" />
+                          )}
+                        </button>
                         <div className="absolute -bottom-1 -right-1 bg-purple-500 rounded-full p-1">
                           <Heart className="w-3 h-3 text-white fill-white" />
                         </div>
