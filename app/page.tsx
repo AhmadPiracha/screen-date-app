@@ -1,9 +1,10 @@
 'use client'
 
 import Link from 'next/link'
-import { useEffect, useRef } from 'react'
+import { useEffect, useRef, useState } from 'react'
+import { useRouter } from 'next/navigation'
 import { Button } from '@/components/ui/button'
-import { Film, Heart, Users, Popcorn, MessageCircle, MapPin, Star, Sparkles, ChevronRight } from 'lucide-react'
+import { Film, Heart, Users, Popcorn, MessageCircle, MapPin, Star, Sparkles, ChevronRight, Loader2 } from 'lucide-react'
 
 function useScrollAnimation() {
   const ref = useRef<HTMLDivElement>(null)
@@ -31,6 +32,33 @@ function useScrollAnimation() {
 
 export default function HomePage() {
   const scrollRef = useScrollAnimation()
+  const router = useRouter()
+  const [checking, setChecking] = useState(true)
+
+  useEffect(() => {
+    // Check if user is already logged in
+    fetch('/api/users/me')
+      .then((res) => {
+        if (res.ok) {
+          // User is logged in, redirect to discover
+          router.replace('/discover')
+        } else {
+          setChecking(false)
+        }
+      })
+      .catch(() => {
+        setChecking(false)
+      })
+  }, [router])
+
+  // Show loading while checking auth
+  if (checking) {
+    return (
+      <div className="min-h-screen flex items-center justify-center bg-gradient-to-br from-purple-600 via-pink-500 to-orange-400">
+        <Loader2 className="w-8 h-8 animate-spin text-white" />
+      </div>
+    )
+  }
 
   return (
     <div ref={scrollRef} className="min-h-screen">
