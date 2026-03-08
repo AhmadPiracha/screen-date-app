@@ -6,7 +6,7 @@ import Link from 'next/link'
 import { Avatar, AvatarFallback, AvatarImage } from '@/components/ui/avatar'
 import { Card } from '@/components/ui/card'
 import { Badge } from '@/components/ui/badge'
-import { Loader2, MessageCircle, Heart, Film, ArrowLeft, Share2 } from 'lucide-react'
+import { Loader2, MessageCircle, Heart, Film, ArrowLeft, Share2, Calendar } from 'lucide-react'
 import { Button } from '@/components/ui/button'
 import type { Conversation } from '@/types'
 import { formatDistanceToNow } from 'date-fns'
@@ -203,29 +203,43 @@ export default function MatchesPage() {
                 {conversations
                   .filter((c) => !c.lastMessage)
                   .map((conversation) => (
-                    <Link key={conversation.matchId} href={`/chat/${conversation.matchId}`}>
-                      <Card className="p-4 hover:bg-gray-50 transition-colors">
-                        <div className="flex items-center gap-3">
-                          <Avatar className="w-14 h-14">
-                            <AvatarImage src={conversation.otherUserProfile?.avatar_url || ''} />
-                            <AvatarFallback className="bg-purple-100 text-purple-600">
-                              {conversation.otherUserProfile?.name?.charAt(0) || '?'}
-                            </AvatarFallback>
-                          </Avatar>
-                          
-                          <div className="flex-1">
-                            <h3 className="font-semibold">
-                              {conversation.otherUserProfile?.name || 'User'}
-                            </h3>
-                            <p className="text-sm text-purple-500">
-                              Say hello!
-                            </p>
-                          </div>
-                          
-                          <Badge variant="secondary">New</Badge>
+                    <Card key={conversation.matchId} className="p-4">
+                      <div className="flex items-center gap-3 mb-3">
+                        <Avatar className="w-14 h-14">
+                          <AvatarImage src={conversation.otherUserProfile?.avatar_url || ''} />
+                          <AvatarFallback className="bg-purple-100 text-purple-600">
+                            {conversation.otherUserProfile?.name?.charAt(0) || '?'}
+                          </AvatarFallback>
+                        </Avatar>
+                        <div className="flex-1">
+                          <h3 className="font-semibold">
+                            {conversation.otherUserProfile?.name || 'User'}
+                          </h3>
+                          <p className="text-sm text-purple-500 flex items-center gap-1">
+                            <Heart className="w-3 h-3 fill-purple-400 text-purple-400" />
+                            You matched!
+                          </p>
                         </div>
-                      </Card>
-                    </Link>
+                        <Badge variant="secondary">New</Badge>
+                      </div>
+                      <div className="flex gap-2">
+                        <Link href={`/chat/${conversation.matchId}`} className="flex-1">
+                          <Button size="sm" className="w-full bg-purple-600 hover:bg-purple-700">
+                            <MessageCircle className="w-3.5 h-3.5 mr-1.5" />
+                            Start Chat
+                          </Button>
+                        </Link>
+                        <Button
+                          size="sm"
+                          variant="outline"
+                          className="flex-1"
+                          onClick={() => router.push(`/chat/${conversation.matchId}?intent=watchparty`)}
+                        >
+                          <Calendar className="w-3.5 h-3.5 mr-1.5" />
+                          Plan Watch Party
+                        </Button>
+                      </div>
+                    </Card>
                   ))}
               </>
             )}

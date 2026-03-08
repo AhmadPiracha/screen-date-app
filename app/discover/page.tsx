@@ -6,7 +6,7 @@ import { AnimatePresence } from 'framer-motion'
 import { SwipeCard, ActionButtons } from '@/components/feed/SwipeCard'
 import { Button } from '@/components/ui/button'
 import { Card, CardContent } from '@/components/ui/card'
-import { Loader2, Film, Heart, RefreshCw, Settings } from 'lucide-react'
+import { Loader2, Film, Heart, RefreshCw, Settings, ArrowLeft, ArrowRight, CheckCircle2 } from 'lucide-react'
 import Link from 'next/link'
 import type { DiscoverProfile } from '@/types'
 
@@ -17,6 +17,13 @@ export default function DiscoverPage() {
   const [currentIndex, setCurrentIndex] = useState(0)
   const [matchPopup, setMatchPopup] = useState<DiscoverProfile | null>(null)
   const [error, setError] = useState('')
+  const [showOnboarding, setShowOnboarding] = useState(false)
+
+  // Show onboarding once per browser session for new users
+  useEffect(() => {
+    const done = localStorage.getItem('discover_onboarding_done')
+    if (!done) setShowOnboarding(true)
+  }, [])
 
   const fetchProfiles = useCallback(async () => {
     setLoading(true)
@@ -81,6 +88,11 @@ export default function DiscoverPage() {
 
   const closeMatchPopup = () => {
     setMatchPopup(null)
+  }
+
+  const dismissOnboarding = () => {
+    localStorage.setItem('discover_onboarding_done', '1')
+    setShowOnboarding(false)
   }
 
   if (loading) {
@@ -184,23 +196,73 @@ export default function DiscoverPage() {
         <div className="fixed inset-0 bg-black/80 z-50 flex items-center justify-center p-4">
           <div className="bg-white rounded-2xl p-8 max-w-sm w-full text-center animate-in zoom-in-95">
             <div className="text-6xl mb-4">🎉</div>
-            <h2 className="text-2xl font-bold text-purple-600 mb-2">
+            <h2 className="text-2xl font-bold text-purple-600 mb-1">
               It&apos;s a Match!
             </h2>
-            <p className="text-muted-foreground mb-6">
-              You and {matchPopup.name} both want to watch movies together!
+            <p className="text-muted-foreground mb-2">
+              You and <span className="font-semibold text-gray-800">{matchPopup.name}</span> both want to watch movies together
             </p>
-            
-            <div className="flex gap-3">
-              <Button variant="outline" onClick={closeMatchPopup} className="flex-1">
-                Keep Swiping
-              </Button>
-              <Link href="/matches" className="flex-1">
-                <Button className="w-full">
-                  Send Message
+            {matchPopup.commonMovies && matchPopup.commonMovies.length > 0 && (
+              <div className="bg-purple-50 rounded-xl px-4 py-3 mb-6 flex items-center gap-2">
+                <Film className="w-4 h-4 text-purple-500 flex-shrink-0" />
+                <span className="text-sm font-medium text-purple-800 truncate">
+                  {matchPopup.commonMovies[0].title}
+                </span>
+              </div>
+            )}
+            <div className="flex flex-col gap-2">
+              <Link href="/matches" className="w-full">
+                <Button className="w-full bg-purple-600 hover:bg-purple-700">
+                  <Heart className="w-4 h-4 mr-2" />
+                  Start Chat
                 </Button>
               </Link>
+              <Button variant="outline" onClick={closeMatchPopup} className="w-full">
+                Keep Swiping
+              </Button>
             </div>
+          </div>
+        </div>
+      )}
+
+      {/* First-time onboarding overlay */}
+      {showOnboarding && (
+        <div className="fixed inset-0 bg-black/70 z-50 flex items-end justify-center p-4 sm:items-center">
+          <div className="bg-white rounded-2xl p-6 max-w-sm w-full animate-in slide-in-from-bottom-4">
+            <h2 className="text-xl font-bold text-center mb-1">How to Discover</h2>
+            <p className="text-muted-foreground text-center text-sm mb-6">Find people who share your taste in movies</p>
+            <div className="space-y-4 mb-6">
+              <div className="flex items-center gap-4">
+                <div className="w-12 h-12 rounded-full bg-green-100 flex items-center justify-center flex-shrink-0">
+                  <ArrowRight className="w-5 h-5 text-green-600" />
+                </div>
+                <div>
+                  <p className="font-semibold text-sm">Swipe Right</p>
+                  <p className="text-xs text-muted-foreground">You&apos;re interested in watching together</p>
+                </div>
+              </div>
+              <div className="flex items-center gap-4">
+                <div className="w-12 h-12 rounded-full bg-red-100 flex items-center justify-center flex-shrink-0">
+                  <ArrowLeft className="w-5 h-5 text-red-500" />
+                </div>
+                <div>
+                  <p className="font-semibold text-sm">Swipe Left</p>
+                  <p className="text-xs text-muted-foreground">Skip to the next person</p>
+                </div>
+              </div>
+              <div className="flex items-center gap-4">
+                <div className="w-12 h-12 rounded-full bg-purple-100 flex items-center justify-center flex-shrink-0">
+                  <CheckCircle2 className="w-5 h-5 text-purple-600" />
+                </div>
+                <div>
+                  <p className="font-semibold text-sm">Instant Match</p>
+                  <p className="text-xs text-muted-foreground">When you both swipe right, you can chat</p>
+                </div>
+              </div>
+            </div>
+            <Button className="w-full bg-purple-600 hover:bg-purple-700" onClick={dismissOnboarding}>
+              Got it — Let&apos;s Go! 🍿
+            </Button>
           </div>
         </div>
       )}

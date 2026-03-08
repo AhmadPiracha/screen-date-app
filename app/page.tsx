@@ -74,19 +74,19 @@ export default function HomePage() {
           <div className="text-center text-white">
             <div className="inline-flex items-center gap-2 bg-white/20 backdrop-blur-sm rounded-full px-4 py-2 mb-6 text-sm">
               <Sparkles className="w-4 h-4" />
-              <span>Find your perfect movie partner</span>
+              <span>Tinder for movies 🍿</span>
             </div>
             <h1 className="text-4xl md:text-6xl font-bold mb-6 leading-tight">
-              Swipe. Match.<br />
-              <span className="text-purple-200">Watch Together.</span>
+              Find Your Next<br />
+              <span className="text-purple-200">Movie Match 🎬</span>
             </h1>
             <p className="text-xl text-white/90 mb-10 max-w-lg mx-auto">
-              Find someone in your city who wants to watch the same movie as you
+              Swipe movies like Tinder. Instantly match with friends who want to watch the same thing.
             </p>
             <div className="flex flex-col sm:flex-row gap-4 justify-center mb-16">
               <Link href="/signup">
                 <Button size="lg" className="w-full sm:w-auto bg-white text-purple-600 hover:bg-yellow-300 hover:text-purple-700 hover:scale-105 transition-all duration-200 text-lg px-8 shadow-xl shadow-purple-900/30">
-                  Get Started Free
+                  Start Swiping Free
                   <ChevronRight className="w-5 h-5 ml-1" />
                 </Button>
               </Link>
@@ -219,7 +219,7 @@ export default function HomePage() {
       <div className="bg-white py-20 px-4">
         <div className="container mx-auto max-w-5xl">
           <h2 className="text-3xl md:text-4xl font-bold text-center mb-4">Why ScreenDate?</h2>
-          <p className="text-gray-600 text-center mb-12">The smartest way to find someone to go to the movies with</p>
+          <p className="text-gray-600 text-center mb-12">Swipe → match → plan → watch. The only app built for movie lovers who hate watching alone.</p>
           <div className="grid md:grid-cols-3 gap-8">
             <div className="group">
               <div className="bg-white rounded-2xl p-8 text-center hover:shadow-xl hover:shadow-purple-100 transition-all duration-300 hover:-translate-y-2 border border-gray-100">
@@ -256,7 +256,7 @@ export default function HomePage() {
       <div className="bg-gray-900 py-20 px-4">
         <div className="container mx-auto max-w-4xl">
           <h2 className="text-3xl md:text-4xl font-bold text-center mb-4 text-white">How It Works</h2>
-          <p className="text-gray-400 text-center mb-12">Four simple steps to your next movie date</p>
+          <p className="text-gray-400 text-center mb-12">Go from signup to watching together in under 5 minutes</p>
           <div className="grid md:grid-cols-2 gap-6">
             {[
               { num: 1, title: 'Create Your Profile', desc: 'Sign up, add your city, and set your preferences', icon: Users },
@@ -309,11 +309,11 @@ export default function HomePage() {
       {/* Footer CTA */}
       <div className="bg-purple-600 py-20 px-4 text-center">
         <div className="container mx-auto max-w-2xl">
-          <h2 className="text-3xl md:text-4xl font-bold text-white mb-4">Ready to Find Your Movie Partner?</h2>
-          <p className="text-white/80 mb-8 text-lg">Join thousands of movie lovers finding their perfect cinema companion</p>
+          <h2 className="text-3xl md:text-4xl font-bold text-white mb-4">Your Next Watch Party Starts Here 🍿</h2>
+          <p className="text-white/80 mb-8 text-lg">Join thousands of movie lovers who stopped watching alone</p>
           <Link href="/signup">
             <Button size="lg" className="bg-white text-purple-600 hover:bg-yellow-300 hover:text-purple-700 hover:scale-105 transition-all duration-200 text-lg px-10 py-6 shadow-xl shadow-purple-900/30">
-              Join Now - It&apos;s Free
+              Start Swiping — It&apos;s Free
               <ChevronRight className="w-5 h-5 ml-1" />
             </Button>
           </Link>

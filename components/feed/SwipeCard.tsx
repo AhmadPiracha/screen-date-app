@@ -3,7 +3,7 @@
 import { useState, memo } from 'react'
 import { motion, useMotionValue, useTransform, PanInfo } from 'framer-motion'
 import Image from 'next/image'
-import { Heart, X, Film, MapPin } from 'lucide-react'
+import { Heart, X, Film, MapPin, Star } from 'lucide-react'
 import { Badge } from '@/components/ui/badge'
 import type { DiscoverProfile, Movie } from '@/types'
 
@@ -116,16 +116,29 @@ export const SwipeCard = memo(function SwipeCard({ profile, onSwipe, isTop }: Sw
                 <Film className="w-3 h-3" />
                 Movies in common
               </p>
-              <div className="flex flex-wrap gap-1">
-                {profile.commonMovies.slice(0, 3).map((movie) => (
-                  <Badge key={movie.id} variant="secondary" className="text-xs">
-                    {movie.title}
-                  </Badge>
+              <div className="space-y-1.5">
+                {profile.commonMovies.slice(0, 2).map((movie) => (
+                  <div key={movie.id} className="flex items-center justify-between bg-gray-50 rounded-lg px-2 py-1.5">
+                    <span className="text-xs font-medium text-gray-800 truncate max-w-[140px]">{movie.title}</span>
+                    <div className="flex items-center gap-2 flex-shrink-0 ml-2">
+                      {movie.vote_average != null && movie.vote_average > 0 && (
+                        <span className="flex items-center gap-0.5 text-xs text-yellow-600">
+                          <Star className="w-3 h-3 fill-yellow-400 text-yellow-400" />
+                          {movie.vote_average.toFixed(1)}
+                        </span>
+                      )}
+                      {movie.genres && movie.genres.length > 0 && (
+                        <Badge variant="secondary" className="text-[10px] px-1 py-0">
+                          {movie.genres[0].name}
+                        </Badge>
+                      )}
+                    </div>
+                  </div>
                 ))}
-                {profile.commonMovies.length > 3 && (
-                  <Badge variant="outline" className="text-xs">
-                    +{profile.commonMovies.length - 3} more
-                  </Badge>
+                {profile.commonMovies.length > 2 && (
+                  <p className="text-xs text-muted-foreground text-center">
+                    +{profile.commonMovies.length - 2} more in common
+                  </p>
                 )}
               </div>
             </div>
